@@ -142,7 +142,6 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
             let subview = view?.hitTest(loc, with: nil)
             
             if subview == imageCropView && imageCropViewConstraintTop.constant == imageCropViewOriginalConstraintTop {
-                
                 return
             }
             
@@ -309,7 +308,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
             
             }, completion: nil)
         
-        dragDirection = Direction.up
+        dragDirection = Direction.stop
         collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
     }
     
