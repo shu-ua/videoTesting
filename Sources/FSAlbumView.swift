@@ -138,7 +138,7 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
         if sender.state == UIGestureRecognizerState.began {
             
             let view    = sender.view
-            var loc     = sender.location(in: view)
+            let loc     = sender.location(in: view)
             let subview = view?.hitTest(loc, with: nil)
             
             if subview == imageCropView && imageCropViewConstraintTop.constant == imageCropViewOriginalConstraintTop {
