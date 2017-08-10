@@ -90,7 +90,7 @@ public class FusumaViewController: UIViewController {
     public var mode: FusumaMode = .camera
     public var selectedMode: FusumaMode = .library
     public var libraryMediaTypes: [PHAssetMediaType] = [.video, .image]
-    public var maxVideoTimescale: Double = 60
+    public var maxVideoTimescale: Double?
     
     var willFilter = true
     
@@ -137,6 +137,7 @@ public class FusumaViewController: UIViewController {
         videoView.delegate = self
         
         albumView.libraryMediaTypes = libraryMediaTypes
+        albumView.maxVideoTimescale = maxVideoTimescale
         videoView.maxVideoTimescale = maxVideoTimescale
         
         menuView.backgroundColor = fusumaBackgroundColor

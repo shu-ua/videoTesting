@@ -36,6 +36,7 @@ class ViewController: UIViewController, FusumaDelegate {
         fusuma.delegate = self
         fusuma.selectedMode = .library
         fusuma.allowedModes = [.library, .video]
+        fusuma.maxVideoTimescale = 3
 
         self.present(fusuma, animated: true, completion: nil)
     }
