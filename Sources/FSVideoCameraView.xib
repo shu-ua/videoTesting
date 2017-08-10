@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -73,6 +73,12 @@
                         <constraint firstAttribute="trailing" secondItem="yHq-QZ-jPz" secondAttribute="trailing" constant="15" id="x4Y-A2-snd"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 / 00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3lA-ci-3hV">
+                    <rect key="frame" x="151" y="62.000000000000007" width="99.333333333333343" height="18.666666666666679"/>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -80,6 +86,8 @@
                 <constraint firstAttribute="bottom" secondItem="6gh-EB-weA" secondAttribute="bottom" id="IOQ-4M-Rye"/>
                 <constraint firstAttribute="trailing" secondItem="6gh-EB-weA" secondAttribute="trailing" id="Lge-9D-s38"/>
                 <constraint firstItem="0hK-pW-0DW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="ZtF-xP-XL4"/>
+                <constraint firstItem="3lA-ci-3hV" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="eBI-oy-TP7"/>
+                <constraint firstItem="3lA-ci-3hV" firstAttribute="top" secondItem="0hK-pW-0DW" secondAttribute="top" constant="12" id="flR-bR-rF8"/>
                 <constraint firstItem="0hK-pW-0DW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="snf-T0-XlH"/>
                 <constraint firstAttribute="trailing" secondItem="0hK-pW-0DW" secondAttribute="trailing" id="syg-FP-hcI"/>
                 <constraint firstItem="6gh-EB-weA" firstAttribute="top" secondItem="0hK-pW-0DW" secondAttribute="bottom" id="t3B-Bo-8p1"/>
@@ -90,6 +98,7 @@
                 <outlet property="flipButton" destination="oPV-fC-75T" id="J96-fz-NnG"/>
                 <outlet property="previewViewContainer" destination="0hK-pW-0DW" id="8bh-3S-jSb"/>
                 <outlet property="shotButton" destination="cpy-ro-bt6" id="SbF-vE-c2o"/>
+                <outlet property="timescaleLabel" destination="3lA-ci-3hV" id="cRo-Ku-vKp"/>
             </connections>
             <point key="canvasLocation" x="519" y="448"/>
         </view>

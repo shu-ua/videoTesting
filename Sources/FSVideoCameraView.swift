@@ -20,6 +20,7 @@ final class FSVideoCameraView: UIView {
     @IBOutlet weak var shotButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var flipButton: UIButton!
+    @IBOutlet var timescaleLabel: UILabel!
     
     weak var delegate: FSVideoCameraViewDelegate? = nil
     
@@ -33,6 +34,15 @@ final class FSVideoCameraView: UIView {
     var startCameraAfterSessionStop: Bool = false
     
     var maxVideoTimescale: Double?
+    private var maxVideoTimescaleString: String?
+    
+    lazy var dateComponentsFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute, .second]
+        return formatter
+    }()
     
     fileprivate var isRecording = false
     
@@ -49,6 +59,7 @@ final class FSVideoCameraView: UIView {
     func initialize() {
         
         self.show()
+        self.updateTimestampLabelVisability()
         
         NextLevel.shared.previewLayer.frame = self.previewViewContainer.bounds
         self.previewViewContainer.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -89,7 +100,9 @@ final class FSVideoCameraView: UIView {
         
         // video configuration
         nextLevel.videoConfiguration.bitRate = 2000000
-        //        nextLevel.videoConfiguration.timescale = self.maxVideoTimescale
+        if let maxVideoTimescale = self.maxVideoTimescale {
+            nextLevel.videoConfiguration.maximumCaptureDuration = CMTimeMakeWithSeconds(maxVideoTimescale, 1000)
+        }
         nextLevel.videoConfiguration.aspectRatio = .square
         nextLevel.videoConfiguration.scalingMode = AVVideoScalingModeResizeAspectFill
         
@@ -97,8 +110,6 @@ final class FSVideoCameraView: UIView {
         nextLevel.audioConfiguration.bitRate = 96000
         
         flashConfiguration()
-        
-        //        self.startCamera()
     }
     
     deinit {
@@ -191,6 +202,45 @@ final class FSVideoCameraView: UIView {
             }
         }
     }
+    
+    //MARK: - Timestamp
+    private func updateTimestampLabelVisability() {
+        if let _ = maxVideoTimescale {
+            updateTimestampLabelValue()
+            self.timescaleLabel.isHidden = false
+        } else {
+            self.timescaleLabel.isHidden = true
+        }
+    }
+    
+    fileprivate func updateTimestampLabelValue(withTime time:CMTime? = nil) {
+        if self.maxVideoTimescaleString == nil {
+            self.maxVideoTimescaleString = timescaleToString(withDouble: self.maxVideoTimescale!)
+        }
+        
+        let currentTimestampString: String?
+        if let time = time {
+            currentTimestampString = timescaleToString(withTime: time)
+        } else {
+            currentTimestampString = timescaleToString(withDouble: 0)
+        }
+        
+        self.timescaleLabel.text = "\(currentTimestampString!) / \(self.maxVideoTimescaleString!)"
+        
+    }
+    
+    private func timescaleToString(withTime time: CMTime) -> String {
+        let seconds = CMTimeGetSeconds(time)
+        return timescaleToString(withDouble: seconds)
+    }
+    
+    private func timescaleToString(withDouble doubleValue:Double) -> String {
+        return dateComponentsFormatter.string(from: doubleValue)!
+    }
+    
+    private func timeText(from value: Int) -> String {
+        return value < 10 ? "0\(value)" : "\(value)"
+    }
 }
 
 extension FSVideoCameraView: NextLevelVideoDelegate {
@@ -221,10 +271,14 @@ extension FSVideoCameraView: NextLevelVideoDelegate {
     }
     
     func nextLevel(_ nextLevel: NextLevel, didCompleteClip clip: NextLevelClip, inSession session: NextLevelSession) {
+        print("nextLevel(_ nextLevel: NextLevel, didCompleteClip clip: NextLevelClip, inSession session: NextLevelSession)")
         self.endCapturing(withClip: clip)
     }
     
     func nextLevel(_ nextLevel: NextLevel, didAppendVideoSampleBuffer sampleBuffer: CMSampleBuffer, inSession session: NextLevelSession) {
+        if let _ = self.maxVideoTimescale {
+            self.updateTimestampLabelValue(withTime: session.duration)
+        }
     }
     
     func nextLevel(_ nextLevel: NextLevel, didAppendAudioSampleBuffer sampleBuffer: CMSampleBuffer, inSession session: NextLevelSession) {
@@ -238,6 +292,7 @@ extension FSVideoCameraView: NextLevelVideoDelegate {
     
     func nextLevel(_ nextLevel: NextLevel, didCompleteSession session: NextLevelSession) {
         // called when a configuration time limit is specified
+        print("nextLevel(_ nextLevel: NextLevel, didCompleteSession session: NextLevelSession)")
     }
     
     func nextLevel(_ nextLevel: NextLevel, didCompletePhotoCaptureFromVideoFrame photoDict: [String : Any]?) {
@@ -273,11 +328,9 @@ extension FSVideoCameraView: NextLevelDelegate {
     
     // session
     func nextLevelSessionWillStart(_ nextLevel: NextLevel) {
-        print("nextLevelSessionWillStart")
     }
     
     func nextLevelSessionDidStart(_ nextLevel: NextLevel) {
-        print("nextLevelSessionDidStart")
     }
     
     func nextLevelSessionDidStop(_ nextLevel: NextLevel) {

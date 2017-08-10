@@ -36,6 +36,8 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
     let cellSize = CGSize(width: 100, height: 100)
     var phAsset: PHAsset!
     
+    var maxVideoTimescale: Double?
+    
     // Variables for calculating the position
     enum Direction {
         case scroll
@@ -106,6 +108,11 @@ final class FSAlbumView: UIView, UICollectionViewDataSource, UICollectionViewDel
             }
             predicate += "mediaType = \(mediaType.rawValue)"
         }
+        
+        if let maxVideoDuration = self.maxVideoTimescale, predicate.characters.count > 0 {
+            predicate = "(\(predicate)) AND duration <= \(maxVideoDuration)"
+        }
+        
         options.predicate = NSPredicate(format: predicate)
         images = PHAsset.fetchAssets(with: options)
         
