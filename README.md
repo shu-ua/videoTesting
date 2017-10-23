@@ -1,37 +1,8 @@
 ## Fusuma
 
-Fusuma is a Swift library that provides an Instagram-like photo browser with a camera feature using only a few lines of code.  
-You can use Fusuma instead of UIImagePickerController. It also has a feature to take a square-sized photo.
-
-[![Version](https://img.shields.io/cocoapods/v/Fusuma.svg?style=flat)](http://cocoapods.org/pods/Fusuma)
-[![Platform](https://img.shields.io/cocoapods/p/Fusuma.svg?style=flat)](http://cocoapods.org/pods/Fusuma)
-[![CI Status](http://img.shields.io/travis/ytakzk/Fusuma.svg?style=flat)](https://travis-ci.org/ytakzk/Fusuma)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![codebeat](https://codebeat.co/badges/287ff7b1-4cda-4384-8780-88e1dbff95cd)](https://codebeat.co/projects/github-com-ytakzk-fusuma)
-
-## Preview
-<img src="https://raw.githubusercontent.com/wiki/ytakzk/Fusuma/images/fusuma.gif" width="340px">
-
-## Images
-<img src="https://raw.githubusercontent.com/wiki/ytakzk/Fusuma/images/shot1.jpg" width="340px">
-<img src="https://raw.githubusercontent.com/wiki/ytakzk/Fusuma/images/shot2.jpg" width="340px">
-
-## Features
-- [x] UIImagePickerController alternative
-- [x] Cropping images in camera roll
-- [x] Taking a square-sized photo and a video using AVFoundation
-- [x] Flash: On & Off 
-- [x] Camera Mode: Front & Back 
-- [x] Video Mode
-- [x] Colors fully customizable
-
-Those features are available just with a few lines of code!
+Fusuma is a Swift library that provides an Instagram-like photo browser with a camera feature using only a few lines of code. 
 
 ## Installation
-
-#### Manual installation
-
-Download and drop the 'Classes' folder into your Xcode project.  
 
 #### Using [CocoaPods](http://cocoapods.org/)
 
@@ -40,14 +11,7 @@ Add `pod 'Fusuma'` to your `Podfile` and run `pod install`. Also add `use_framew
 ```
 use_frameworks!
 pod 'Fusuma'
-```
-
-#### Using [Carthage](https://github.com/Carthage/Carthage)
-
-Add `github "ytakzk/Fusuma"` to your `Cartfile` and run `carthage update`. If unfamiliar with Carthage then checkout their [Getting Started section](https://github.com/Carthage/Carthage#getting-started).
-
-```
-github "ytakzk/Fusuma"
+pod "NextLevel", :git => 'https://github.com/shu-ua/NextLevel.git'
 ```
 
 ## Fusuma Usage
