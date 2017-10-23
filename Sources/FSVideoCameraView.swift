@@ -122,8 +122,8 @@ final class FSVideoCameraView: UIView {
         let nextLevel = NextLevel.shared
         
         //
-        if nextLevel.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized &&
-            nextLevel.authorizationStatus(forMediaType: AVMediaTypeAudio) == .authorized {
+        if nextLevel.authorizationStatus(forMediaType: AVMediaType.video) == .authorized &&
+            nextLevel.authorizationStatus(forMediaType: AVMediaType.audio) == .authorized {
             if NextLevel.shared.session == nil {
             do {
                 try nextLevel.start()
@@ -135,8 +135,8 @@ final class FSVideoCameraView: UIView {
                 startCameraAfterSessionStop = true
             }
         } else {
-            nextLevel.requestAuthorization(forMediaType: AVMediaTypeVideo)
-            nextLevel.requestAuthorization(forMediaType: AVMediaTypeAudio)
+            nextLevel.requestAuthorization(forMediaType: AVMediaType.video)
+            nextLevel.requestAuthorization(forMediaType: AVMediaType.audio)
         }
         //        }
     }
@@ -245,6 +245,15 @@ final class FSVideoCameraView: UIView {
 
 extension FSVideoCameraView: NextLevelVideoDelegate {
     
+    func nextLevel(_ nextLevel: NextLevel, willProcessRawVideoSampleBuffer sampleBuffer: CMSampleBuffer, onQueue queue: DispatchQueue) {
+        
+    }
+    
+    
+    func nextLevel(_ nextLevel: NextLevel, willProcessFrame frame: AnyObject, pixelBuffer: CVPixelBuffer, timestamp: TimeInterval, onQueue queue: DispatchQueue) {
+        
+    }
+    
     // video zoom
     func nextLevel(_ nextLevel: NextLevel, didUpdateVideoZoomFactor videoZoomFactor: Float) {
     }
@@ -304,10 +313,10 @@ extension FSVideoCameraView: NextLevelVideoDelegate {
 extension FSVideoCameraView: NextLevelDelegate {
     
     // permission
-    func nextLevel(_ nextLevel: NextLevel, didUpdateAuthorizationStatus status: NextLevelAuthorizationStatus, forMediaType mediaType: String) {
+    func nextLevel(_ nextLevel: NextLevel, didUpdateAuthorizationStatus status: NextLevelAuthorizationStatus, forMediaType mediaType: AVMediaType) {
         print("NextLevel, authorization updated for media \(mediaType) status \(status)")
-        if nextLevel.authorizationStatus(forMediaType: AVMediaTypeVideo) == .authorized &&
-            nextLevel.authorizationStatus(forMediaType: AVMediaTypeAudio) == .authorized {
+        if nextLevel.authorizationStatus(forMediaType: AVMediaType.video) == .authorized &&
+            nextLevel.authorizationStatus(forMediaType: AVMediaType.audio) == .authorized {
             do {
                 try nextLevel.start()
             } catch {
@@ -368,7 +377,7 @@ extension FSVideoCameraView: NextLevelDelegate {
 
 extension FSVideoCameraView {
     
-    func focus(_ recognizer: UITapGestureRecognizer) {
+    @objc func focus(_ recognizer: UITapGestureRecognizer) {
         
         let point = recognizer.location(in: self)
         let viewsize = self.bounds.size

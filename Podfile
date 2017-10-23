@@ -7,6 +7,6 @@ xcodeproj 'Fusuma/Fusuma'
 xcodeproj 'Example/FusumaExample' 
   use_frameworks!
 
-pod "NextLevel", "~> 0.3.5"
+pod "NextLevel", :git => 'https://github.com/shu-ua/NextLevel.git'
 
 end
