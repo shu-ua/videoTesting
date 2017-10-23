@@ -8,27 +8,32 @@
 
 import UIKit
 import Photos
+import AVFoundation
+import AVKit
+import PhotosUI
 
 class ViewController: UIViewController, FusumaDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var showButton: UIButton!
+    @IBOutlet weak var playVideo: UIButton!
     
     @IBOutlet weak var fileUrlLabel: UILabel!
+    private var videoFileURL: URL? {
+        didSet {
+            updateVideoPlayButton()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         showButton.layer.cornerRadius = 2.0
         self.fileUrlLabel.text = ""
+        updateVideoPlayButton()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func showButtonPressed(_ sender: AnyObject) {
         // Show Fusuma
         let fusuma = FusumaViewController()
@@ -41,7 +46,31 @@ class ViewController: UIViewController, FusumaDelegate {
         self.present(fusuma, animated: true, completion: nil)
     }
     
-    // MARK: FusumaDelegate Protocol
+    //MARK: - Video Preview
+    @IBAction func playVideoButtonTouchUp(_ sender: Any) {
+        guard let url = self.videoFileURL else {
+            return
+        }
+        
+        let player = AVPlayer(url: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        }
+    }
+    
+    private func updateVideoPlayButton() {
+        if let _ = videoFileURL {
+            self.playVideo.isHidden = false
+        } else {
+            self.playVideo.isHidden = true
+        }
+        imageView.image = nil
+    }
+    
+    
+    //MARK: - FusumaDelegate Protocol
     func fusumaImageSelected(_ image: UIImage, source: FusumaMode) {
         switch source {
         case .camera:
@@ -52,16 +81,22 @@ class ViewController: UIViewController, FusumaDelegate {
             print("Image selected")
         }
         
+        self.videoFileURL = nil
         imageView.image = image
     }
     
     func fusumaVideoCompleted(withFileURL fileURL: URL) {
         print("video completed and output to file: \(fileURL)")
-        self.fileUrlLabel.text = "file output to: \(fileURL.absoluteString)"
+
+        self.videoFileURL = fileURL
     }
     
     func fusumaVideoCompleted(withPHAsset phAsset: PHAsset) {
-        print(phAsset)
+        PHCachingImageManager().requestAVAsset(forVideo: phAsset, options: nil) { (asset, audioMix, info) in
+            if let asset = asset as? AVURLAsset {
+                self.videoFileURL = asset.url
+            }
+        }
     }
     
     func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
